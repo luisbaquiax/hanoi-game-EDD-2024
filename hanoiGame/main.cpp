@@ -8,10 +8,9 @@
 
 const int FILAS = 7;
 const int COLUMNAS = 3;
-const std::string SIMBOLO = "0";
+const std::string SIMBOLO = "X";
 
 int numberRandom(int lower, int upper) {
-
     int num = (rand() % (upper - lower + 1)) + lower;
     return num;
 }
@@ -52,7 +51,6 @@ std::vector<int> numbers(int disks) {
     std::vector<int> nums;
     int i = 0;
     while (i < disks) {
-
         int random = numberRandom(1, disks);
         while (containNumber(nums, random)) {
             random = numberRandom(1, disks);
@@ -98,11 +96,11 @@ bool colVacia(int col, std::string matriz[FILAS][COLUMNAS]) {
             count++;
         }
     }
-    printf("count: %d\n", count);
+    //printf("count: %d\n", count);
     return count == FILAS;
 }
 
-void menu(int numdisk,std::string matriz[FILAS][COLUMNAS]) {
+void game(int numdisk, std::string matriz[FILAS][COLUMNAS]) {
     Pila torre1;
     Pila torre2;
     Pila torre3;
@@ -116,7 +114,8 @@ void menu(int numdisk,std::string matriz[FILAS][COLUMNAS]) {
 
     int origin = 0;
     int destino = 0;
-    bool continuar = true;
+    int opcion;
+
     while ((!colVacia(0, matriz) || !colVacia(1, matriz))) {
         do {
             printf("Ingrese el numero de torre origen y destino (ejemplo: '1 2'): ");
@@ -176,9 +175,9 @@ void menu(int numdisk,std::string matriz[FILAS][COLUMNAS]) {
                         printf("No se puede trasladar el disco");
                     } else {
                         NodoP *temp = torre2.pop();
-                        quitDisk(0, matriz);
-                        addDisk(1, matriz, temp->valor);
-                        torre3.push(temp->valor);
+                        quitDisk(1, matriz);
+                        addDisk(0, matriz, temp->valor);
+                        torre1.push(temp->valor);
                     }
                 } else {
                     NodoP *temp = torre2.pop();
@@ -255,37 +254,51 @@ void menu(int numdisk,std::string matriz[FILAS][COLUMNAS]) {
             } else {
                 printf("Ya no existe discos en la torre.");
             }
-        }else{
+        } else {
             printf("Torres origen y destino invalidos");
         }
         imprimir(matriz);
+        printf("Elige una opcion (1) CONTINUAR... (2) SALIR:");
+        scanf("%d", &opcion);
+        if (opcion == 2) {
+            printf(" opcion %d", opcion);
+            break;
+        }
     }
     if (colVacia(0, matriz) && colVacia(1, matriz)) {
         printf("Felicidades, has ganado!!!\n");
     } else {
-        printf("Saliendo...");
+        printf("\nNo terminaste el juego, lo sentimos. (Saliendo...)");
     }
-
 }
 
-void game(std::string matriz[FILAS][COLUMNAS]) {
-    menu(matriz);
+void play(std::string matriz[FILAS][COLUMNAS]) {
+    int numberDisks;
+    do {
+        printf("Elige una cantidad de discos (3min-7max): ");
+        scanf("%d", &numberDisks);
+    } while (numberDisks < 3 || numberDisks > 7);
+    game(numberDisks, matriz);
+}
+
+void menu(std::string matriz[FILAS][COLUMNAS]) {
+    printf("|************ HANOI GAME ************|\n");
+    int op;
+    play(matriz);
+    printf("\nMenu: [1] JUGAR [2] SALIR\n");
+    scanf("%d", &op);
+    if (op == 2) {
+        std::exit(0);
+    } else if (op == 1) {
+        play(matriz);
+    }
 }
 
 int main() {
     srand(time(0));
     std::string tablero[FILAS][COLUMNAS];
-    game(tablero);
-    std::cout << "Pulse Enter para continuar...";
+    menu(tablero);
+    std::cout << "\nPulse Enter para continuar...";
     std::cin.ignore();
-    /*Pila p1;
-    Pila p2;
-    p1.push("1");
-    if(!p2.esVacia()){
-        if (std::stoi(p2.pop()->valor) > std::stoi(p1.pop()->valor)) {
-            printf("dos > uno");
-        }
-    }*/
-
     return 0;
 }

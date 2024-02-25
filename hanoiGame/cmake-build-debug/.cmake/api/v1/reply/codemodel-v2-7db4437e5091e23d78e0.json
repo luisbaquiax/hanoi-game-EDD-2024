@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Usuario/Desktop/proyectos/hanoiGame/cmake-build-debug",
-		"source" : "C:/Users/Usuario/Desktop/proyectos/hanoiGame"
+		"build" : "C:/Users/Usuario/Desktop/proyectos/hanoi-game-EDD-2024/hanoiGame/cmake-build-debug",
+		"source" : "C:/Users/Usuario/Desktop/proyectos/hanoi-game-EDD-2024/hanoiGame"
 	},
 	"version" : 
 	{
